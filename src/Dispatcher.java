@@ -2,10 +2,9 @@ package example;
 
 public interface Dispatcher extends Runnable {
 
-  void notifyAvailable(Taxi taxi);
+  void notifyAvailable(Thread thread);
 
-  void placeOrder(Taxi taxi, Order order);
+  void getCommand(Thread Thread, Command cmd);
 
   void run();
-
 }

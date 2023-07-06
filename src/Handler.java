@@ -1,4 +1,4 @@
-package ru.hse.cs.java.assesment;
+package example;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Handler {

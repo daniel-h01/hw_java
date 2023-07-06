@@ -6,44 +6,45 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class Main {
 
-  private static final int ORDER_LIMIT = 1;
-  private static final int TAXIS_LIMIT = 5;
+  private static int COMMAND_LIMIT;
+  private static final int THREADS_LIMIT = 5;
 
-  public static void main(String[] args) throws InterruptedException {
-    Queue<Order> orders = new ArrayBlockingQueue<>(ORDER_LIMIT);
-    Queue<Taxi> availableTaxis = new ArrayBlockingQueue<>(TAXIS_LIMIT);
+  public static void main(String[] args) throws InterruptedException // commands (очередь команд, все также)
+    Queue<Taxi> availableThreads = new ArrayBlockingQueue<>(THREADS_LIMIT); // просто потоки а не такси
 
-    Dispatcher dispatcher = new DefaultDispatcher(orders, availableTaxis);
+    Dispatcher dispatcher = new DefaultDispatcher(commands, availableThreads);
 
-    MyTaxi taxi1 = new MyTaxi("1", dispatcher);
-    MyTaxi taxi2 = new MyTaxi("2", dispatcher);
-    MyTaxi taxi3 = new MyTaxi("3", dispatcher);
-    MyTaxi taxi4 = new MyTaxi("4", dispatcher);
-    MyTaxi taxi5 = new MyTaxi("5", dispatcher);
+    MyThread thread1 = new MyThread("1", dispatcher);
+    MyThread thread2 = new MyThread("2", dispatcher);
+    MyThread thread3 = new MyThread("3", dispatcher);
+    MyThread thread4 = new MyThread("4", dispatcher);
+    MyThread thread5 = new MyThread("5", dispatcher);
 
-    dispatcher.notifyAvailable(taxi1);
-    dispatcher.notifyAvailable(taxi2);
-    dispatcher.notifyAvailable(taxi3);
-    dispatcher.notifyAvailable(taxi4);
-    dispatcher.notifyAvailable(taxi5);
+    dispatcher.notifyAvailable(thread1);
+    dispatcher.notifyAvailable(thread2);
+    dispatcher.notifyAvailable(thread3);
+    dispatcher.notifyAvailable(thread4);
+    dispatcher.notifyAvailable(thread5);
 
     Thread dispatcherThread = new Thread(dispatcher);
 
     dispatcherThread.start();
 
-    generateOrders(orders);
+    getCommands(commands);
   }
 
-  private static void generateOrders(Queue<Order> orders) throws InterruptedException {
-    for (int i = 0; i < ORDER_LIMIT; ++ i) {
+  private static void getCommands(Queue<Order> commands) throws InterruptedException {
+    // здесь обработай получение команд из файла или чего угодно
+    for (int i = 0; i < COMMAND_LIMIT; ++ i) {
       Thread.sleep(1000);
-      if (orders.size() == ORDER_LIMIT) {
+
+      if (commands.size() == COMMAND_LIMIT) {
         System.out.println("Много заказов приостанавливаем прием!");
         Thread.sleep(1000);
       } else {
-        String id = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString(); // меняем
         System.out.printf("Заказ создан %s%n.", id);
-        orders.add(new Order(id));
+        commands.add(new Command(id));  // вот тут нужен твой конструктор команды
       }
     }
   }
