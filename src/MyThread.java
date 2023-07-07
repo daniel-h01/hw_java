@@ -34,9 +34,7 @@ public class MyThread implements OurThread {
     System.out.printf("%s начал выполнять команду № %s%n", this.getId(), currCommand.getId());
 
     try {
-      Thread.sleep(10000);  // здесь тупо выполняешь нужную команду лол, можешь по результатам обсужденного
-      // switch передавать id или лучше делать свитч прямо здесь. Больше ничего не нужно.
-      // Выполнил команду - отчитался - нотифайнул - гуляешь
+      Thread.sleep(10000);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }

@@ -32,22 +32,17 @@ public class DefaultDispatcher implements Dispatcher {
 
         Command cmd = commands.poll();
 
-        System.out.printf("Добавляем заказ для %s%n.", taxi);
         getCommand(taxi, cmd);
-        System.out.printf("Заказ %s принят таксистом %s%n.", cmd, thread);
 
-        System.out.printf("Заказ %s выполняется таксистом %s%n.", cmd, thread);
-        new Thread(thread).start(); // ya retart
-        System.out.printf("Заказ %s выполнен таксистом %s%n.", cmd, thread);
+        new Thread(thread).start();
 
-        System.out.printf("Таксист %s выполнил заказы %s%n.", thread, thread.getExecutedCommands());
       } else {
         try {
-          Thread.sleep(100);  // чтобы не было спама о недоступности свободных таксистов
+          Thread.sleep(100);
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
-        System.out.println("Нету доступных таксистов или заказов, подождем...");
+        System.out.println("Нету доступных тредов или команд, подождем...");
       }
 
     }

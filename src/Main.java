@@ -9,8 +9,8 @@ public class Main {
   private static int COMMAND_LIMIT;
   private static final int THREADS_LIMIT = 5;
 
-  public static void main(String[] args) throws InterruptedException // commands (очередь команд, все также)
-    Queue<Taxi> availableThreads = new ArrayBlockingQueue<>(THREADS_LIMIT); // просто потоки а не такси
+  public static void main(String[] args) throws InterruptedException
+    Queue<Taxi> availableThreads = new ArrayBlockingQueue<>(THREADS_LIMIT);
 
     Dispatcher dispatcher = new DefaultDispatcher(commands, availableThreads);
 
@@ -33,18 +33,14 @@ public class Main {
     getCommands(commands);
   }
 
-  private static void getCommands(Queue<Order> commands) throws InterruptedException {
-    // здесь обработай получение команд из файла или чего угодно
+  private static void getCommands(Queue<Order> commands) throws InterruptedException
     for (int i = 0; i < COMMAND_LIMIT; ++ i) {
       Thread.sleep(1000);
 
       if (commands.size() == COMMAND_LIMIT) {
-        System.out.println("Много заказов приостанавливаем прием!");
         Thread.sleep(1000);
       } else {
-        String id = UUID.randomUUID().toString(); // меняем
-        System.out.printf("Заказ создан %s%n.", id);
-        commands.add(new Command(id));  // вот тут нужен твой конструктор команды
+        commands.add(new Command(id));  // вот тут нужен конструктор команды
       }
     }
   }
